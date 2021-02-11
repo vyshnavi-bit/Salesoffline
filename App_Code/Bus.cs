@@ -1018,9 +1018,9 @@
                                     {
                                         //string baseurl = "http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VYSNVI&to=" + MobNo + "&message=%20" + msg + "&response=Y";
 
-                                        string baseurl = "http://roundsms.com/api/sendhttp.php?authkey=Y2U3NGE2MGFkM2V&mobiles=" + phonenumber + "&message=Dear%20" + BranchName + "Amount Collected For Date:" + Date + "%20Col Amount =" + CollectionAmount + "%20With%20Bal%20Inventory%20" + InvName + "&sender=VYSNVI&type=1&route=2";
+                                        // string baseurl = "http://roundsms.com/api/sendhttp.php?authkey=Y2U3NGE2MGFkM2V&mobiles=" + phonenumber + "&message=Dear%20" + BranchName + "Amount Collected For Date:" + Date + "%20Col Amount =" + CollectionAmount + "%20With%20Bal%20Inventory%20" + InvName + "&sender=VYSNVI&type=1&route=2";
 
-                                        //string baseurl = "http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VSALES&to=" + phonenumber + "&msg=Dear%20" + BranchName + "Amount Collected For Date:" + Date + "%20Col Amount =" + CollectionAmount + "%20With%20Bal%20Inventory%20" + InvName + "&type=1";
+                                       string baseurl = "http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=Vys@2021&from=VYSSAL&to=" + phonenumber + "&msg=Dear%20" + BranchName + "Amount Collected For Date:" + Date + "%20Col Amount =" + CollectionAmount + "%20With%20Bal%20Inventory%20" + InvName + "&type=1";
                                         Stream data = client.OpenRead(baseurl);
                                         StreamReader reader = new StreamReader(data);
                                         string ResponseID = reader.ReadToEnd();
@@ -1058,13 +1058,15 @@
                         else
                         {
                             int DcNo = 0;
-                            cmd = new MySqlCommand("Select DcNo from Agentdc where BranchId=@BranchId and IndDate=@IDate");
+                            cmd = new MySqlCommand("Select agentdcno from Agentdc where BranchId=@BranchId and IndDate between @d1 and @d2");
                             cmd.Parameters.AddWithValue("@BranchId", branch["sno"].ToString());
-                            cmd.Parameters.AddWithValue("@IDate", dtdispDate);
+                            ////cmd.Parameters.AddWithValue("@IDate", dtdispDate);
+                            cmd.Parameters.AddWithValue("@d1", DateConverter.GetLowDate(dtdispDate));
+                            cmd.Parameters.AddWithValue("@d2", DateConverter.GetHighDate(dtdispDate));
                             DataTable dtAgentDc = vdm.SelectQuery(cmd).Tables[0];
                             if (dtAgentDc.Rows.Count > 0)
                             {
-                                int.TryParse(dtAgentDc.Rows[0]["DcNo"].ToString(), out DcNo);
+                                int.TryParse(dtAgentDc.Rows[0]["agentdcno"].ToString(), out DcNo);
                             }
                             cmd = new MySqlCommand("SELECT branchdata.BranchName, branchdata.phonenumber, invmaster.InvName, inventory_monitor.Qty FROM branchdata INNER JOIN inventory_monitor ON branchdata.sno = inventory_monitor.BranchId INNER JOIN invmaster ON inventory_monitor.Inv_Sno = invmaster.sno WHERE (branchdata.sno = @sno) AND (branchdata.flag = 1)");
                             cmd.Parameters.AddWithValue("@sno", branch["sno"].ToString());
@@ -1115,9 +1117,9 @@
                                     string BranchSno = context.Session["BranchSno"].ToString();
                                     if (BranchSno == "4609" || BranchSno == "3625" || BranchSno == "2948" || BranchSno == "172" || BranchSno == "282" || BranchSno == "271" || BranchSno == "174" || BranchSno == "3928" || BranchSno == "285" || BranchSno == "527" || BranchSno == "4607" || BranchSno == "306" || BranchSno == "538" || BranchSno == "2749" || BranchSno == "1801" || BranchSno == "10425" || BranchSno == "11079")
                                     {
-                                        //string baseurl = "http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=vyshnavi@123&from=VSALES&to=" + phonenumber + "&msg=Dear%20" + BranchName + "%20DCNO:%20" + DcNo + "Your%20indent%20delivery%20for%20today" + Date + "%20,%20" + ProductName + "Sale Value =" + Totalamount + "Col Amount =" + CollectionAmount + "%20With%20Bal%20Inventory%20" + InvName + "&type=1";
+                                        string baseurl = "http://www.smsstriker.com/API/sms.php?username=vaishnavidairy&password=Vys@2021&from=VYSSAL&to=" + phonenumber + "&msg=Dear%20" + BranchName + "%20DCNO:%20" + DcNo + "Your%20indent%20delivery%20for%20today" + Date + "%20,%20" + ProductName + "Sale Value =" + Totalamount + "Col Amount =" + CollectionAmount + "%20With%20Bal%20Inventory%20" + InvName + "&type=1&template_id='1407161120194693548'";
 
-                                        string baseurl = "http://roundsms.com/api/sendhttp.php?authkey=Y2U3NGE2MGFkM2V&mobiles=" + phonenumber + "&message=Dear%20" + BranchName + "%20DCNO:%20" + DcNo + "Your%20indent%20delivery%20for%20today" + Date + "%20,%20" + ProductName + "Sale Value =" + Totalamount + "Col Amount =" + CollectionAmount + "%20With%20Bal%20Inventory%20" + InvName + " &sender=VYSNVI&type=1&route=2";
+                                       // string baseurl = "http://roundsms.com/api/sendhttp.php?authkey=Y2U3NGE2MGFkM2V&mobiles=" + phonenumber + "&message=Dear%20" + BranchName + "%20DCNO:%20" + DcNo + "Your%20indent%20delivery%20for%20today" + Date + "%20,%20" + ProductName + "Sale Value =" + Totalamount + "Col Amount =" + CollectionAmount + "%20With%20Bal%20Inventory%20" + InvName + " &sender=VYSNVI&type=1&route=2";
                                         
                                         Stream data = client.OpenRead(baseurl);
                                         StreamReader reader = new StreamReader(data);
@@ -2157,19 +2159,6 @@
                                         {
                                             double EditAmount = TQty * UnitCost;
 
-                                            //Testing Starts
-                                            //cmd = new MySqlCommand("Update branchaccounts set Amount=Amount+@Amount where BranchId=@BranchId");
-                                            //cmd.Parameters.AddWithValue("@Amount", EditAmount);
-                                            //cmd.Parameters.AddWithValue("@BranchId", BranchID);
-                                            //if (vdm.Update(cmd) == 0)
-                                            //{
-                                            //    cmd = new MySqlCommand("Insert Into branchaccounts(Amount,BranchId) values(@Amount,@BranchId)");
-                                            //    cmd.Parameters.AddWithValue("@Amount", EditAmount);
-                                            //    cmd.Parameters.AddWithValue("@BranchId", BranchID);
-                                            //    vdm.insert(cmd);
-                                            //}
-
-                                            //Testing Ends
                                             cmd = new MySqlCommand("update tripsubdata set DeliverQty=DeliverQty+@DeliverQty where ProductId=@ProductId and Tripdata_sno=@Tripdata_sno");
                                             cmd.Parameters.AddWithValue("@DeliverQty", TQty);
                                             int Prsno = 0;
@@ -2442,6 +2431,8 @@
                         float totAmount_ = 0;
                         float PrevAmount = 0;
                         int BranchID_ = 0;
+                        string DispDate = context.Session["I_Date"].ToString();
+                        DateTime dtdispDate = Convert.ToDateTime(DispDate);
                         foreach (DataRow dr in dtAgentWiseSaleValue.Rows)
                         {
                             float.TryParse(dr["DeliveryQty"].ToString(), out totAmount_);
@@ -2490,6 +2481,7 @@
                                         cmd.Parameters.AddWithValue("@Dtripid", context.Session["TripdataSno"].ToString());
                                         cmd.Parameters.AddWithValue("@SaleValue", totAmount_);
                                         vdm.insert(cmd);
+                                       
                                     }
                                 }
 
@@ -2760,35 +2752,9 @@
                                     cmd.Parameters.AddWithValue("@BranchId", BranchID);
                                     cmd.Parameters.AddWithValue("@ctripid", context.Session["TripdataSno"].ToString());
                                     vdm.Update(cmd);
-                                    //if (vdm.Update(cmd) == 0)
-                                    //{
-                                    //    cmd = new MySqlCommand("Insert Into branchaccounts(Amount,BranchId,Ctripid) values(@Amount,@BranchId,@ctripid)");
-                                    //    cmd.Parameters.AddWithValue("@Amount", TodayAmount);
-                                    //    cmd.Parameters.AddWithValue("@BranchId", BranchID);
-                                    //    cmd.Parameters.AddWithValue("@ctripid", context.Session["TripdataSno"].ToString());
-                                    //    vdm.insert(cmd);
-                                    //}
+                                    
                                 }
 
-
-
-                                //}
-                                //else
-                                //{
-                                //    cmd = new MySqlCommand("Update branchaccounts set Amount=Amount+@Amount where BranchId=@BranchId");
-                                //    float amount = 0;
-                                //    float.TryParse(o.Amount, out amount);
-                                //    float Today = 0;
-                                //    float.TryParse(o.TodayAmount, out Today);
-                                //    float BalAmount = amount - Today;
-                                //    cmd.Parameters.AddWithValue("@Amount", BalAmount);
-                                //    cmd.Parameters.AddWithValue("@BranchId", BranchID);
-                                //    vdm.Update(cmd);
-                                //    //cmd = new MySqlCommand("Update branchaccounts set Amount=Amount-@Amount where BranchId=@BranchId");
-                                //    //cmd.Parameters.AddWithValue("@Amount", TodayAmount);
-                                //    //cmd.Parameters.AddWithValue("@BranchId", BranchID);
-                                //    //vdm.Update(cmd);
-                                //}
                                 string BranchSno = context.Session["BranchSno"].ToString();
                                 if (BranchSno == "457" || BranchSno == "159" || BranchSno == "158" || BranchSno == "174" || BranchSno == "3928" || BranchSno == "285" || BranchSno == "527" || BranchSno == "4607" || BranchSno == "306" || BranchSno == "538" || BranchSno == "1839" || BranchSno == "2909" || BranchSno == "2749" || BranchSno == "1801" || BranchSno == "10425" || BranchSno == "11079")
                                 {
@@ -3656,7 +3622,7 @@
                                         cmd.Parameters.AddWithValue("@BranchId", branch["sno"].ToString());
                                         cmd.Parameters.AddWithValue("@IndDate", dtdispDate);
                                         cmd.Parameters.AddWithValue("@IDate", dtdispDate);
-                                        long DcNo = 0;
+                                        string DcNo = "";
                                         int moduleid = 1;
                                         //DataRow[] drcheckbranchid = nontaxdummytable.Select("BranchID=" + branch["sno"].ToString() + "");
                                         //if (drcheckbranchid.Length > 0)
@@ -3733,11 +3699,12 @@
                                                     cmd.Parameters.AddWithValue("@doe", ReportDate);
                                                     cmd.Parameters.AddWithValue("@invoicetype", "OffLine");
                                                     cmd.Parameters.AddWithValue("@indentno", branch["IndentNo"].ToString());
-                                                    DcNo = vdm.insertScalar(cmd);
-                                                    cmd = new MySqlCommand("Insert Into dcsubTable (DcNo,IndentNo) Values(@DcNo,@IndentNo)");
-                                                    cmd.Parameters.AddWithValue("@DcNo", DcNo);
-                                                    cmd.Parameters.AddWithValue("@IndentNo", branch["IndentNo"].ToString());
                                                     vdm.insert(cmd);
+                                                    DcNo = agentdcNo;
+                                                    //cmd = new MySqlCommand("Insert Into dcsubTable (DcNo,IndentNo) Values(@DcNo,@IndentNo)");
+                                                    //cmd.Parameters.AddWithValue("@DcNo", DcNo);
+                                                    //cmd.Parameters.AddWithValue("@IndentNo", branch["IndentNo"].ToString());
+                                                    //vdm.insert(cmd);
                                                 }
                                                 else
                                                 {
@@ -3746,13 +3713,13 @@
                                         }
                                         else
                                         {
-                                            cmd = new MySqlCommand("Select DcNo from Agentdc where BranchId=@BranchId and IndDate=@IDate");
+                                            cmd = new MySqlCommand("Select agentdcno from Agentdc where BranchId=@BranchId and IndDate=@IDate");
                                             cmd.Parameters.AddWithValue("@BranchId", branch["sno"].ToString());
                                             cmd.Parameters.AddWithValue("@IDate", dtdispDate);
                                             DataTable dtAgentDc = vdm.SelectQuery(cmd).Tables[0];
                                             if (dtAgentDc.Rows.Count > 0)
                                             {
-                                                long.TryParse(dtAgentDc.Rows[0]["DcNo"].ToString(), out DcNo);
+                                                DcNo = dtAgentDc.Rows[0]["agentdcno"].ToString(); 
                                             }
                                         }
                                         //}
